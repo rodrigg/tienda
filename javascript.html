@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Javascript</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
+<nav>
+    <ul class="navigation flexcontainer">
+        <li><a href="#alumnos"></a></li>
+    </ul>
+</nav>
+<main>
+    <section id="alumnos">
+        <!-- Trigger the modal with a button -->
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Añadir</button>
+        <button id="borrado" class="btn btn-danger">Borrar</button>
+        <span id="totalAlumnos">Total Alumnos: </span>
+        <table id="listado_alumnos" class="table table-striped">
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>Nombre</th>
+                    <th>Unidad formativa</th>
+                    <th>UF-1841</th>
+                    <th>UF-1842</th>
+                    <th>UF-1843</th>
+                    <th>UF-1844</th>
+                    <th>UF-1845</th>
+                    <th>UF-1846</th>
+                    <th>Nota media</th>
+                    <th>Editar</th>
+                </tr>
+             </thead>
+            <tfoot>
+
+
+            <td colspan="8">Nota media:</td>
+            <td colspan="3">:</td>
+            </tfoot>
+             <tbody>
+
+              </tbody>
+        </table>
+
+    </section>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="#" id="formAlumno">
+                        <div class="form-group row">
+                            <label for="dni" class="col-sm-2 form-control-label">Dni</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="dni" placeholder="Dni">
+                                <span id="dniError">Dni no valido</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="nombre" class="col-sm-2 form-control-label">Nombre</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+                                <span id="nombreError">Los valores deben están entre </span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="apellidos" class="col-sm-2 form-control-label">Apellidos</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="apellidos" placeholder="Apellidos">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="nUF1841" class="col-sm-2 form-control-label">Nota nUF1841</label>
+                            <div class="col-sm-10">
+                                <input type="TEXT" class="form-control" id="nUF1841">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="nUF1841" class="col-sm-2 form-control-label">Nota nUF1842</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="nUF1842">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="nUF1843" class="col-sm-2 form-control-label">Nota nUF1843</label>
+                            <div class="col-sm-10">
+                                <input type="TEXT" class="form-control" id="nUF1843" >
+                            </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="nUF1844" class="col-sm-2 form-control-label">Nota nUF1844</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nUF1844" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="nUF1845" class="col-sm-2 form-control-label">Nota nUF1845</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nUF1845" />
+                                </div>
+                            </div>
+                             <div class="form-group row">
+                                    <label for="nUF1846" class="col-sm-2 form-control-label">Nota nUF1846</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="nUF1846" />
+                                    </div>
+                             </div>
+                            </form>
+                        </div>
+                    </form>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success"  id="guardar">Guardar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
