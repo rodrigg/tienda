@@ -2,65 +2,34 @@
  * Created by Curso on 29/11/2016.
  */
 $.noConflict();
-var dnies=["4571880G"];
-var nombres=new Array()
-nombres["4571880G"]="Imanol";
-
-var apellidos=new Array();
- apellidos["4571880G"]="Jimenez Lopez";
-
-var nUF1841=new Array();
- nUF1841['4571880G']=5;
-var nUF1842=new Array();
-nUF1842['4571880G']=3;
-var nUF1843=new Array();
-nUF1843['4571880G']=2;
-var nUF1844=new Array();
-nUF1844['4571880G']=8;
-var nUF1845=new Array();
-nUF1845['4571880G']=9;
-var nUF1846=new Array();
-nUF1846['4571880G']=7;
+var url="http://localhost:2403";
 jQuery( document ).ready(function( $ ) {
     //
-    borrarFormulario();
-    $("#dniError").hide();
-    $("#nombreError").hide();
-    $("#apellidosError").hide();
-    $("#apellidosError").hide();
-    $("#nUF1841Error").hide();
-    $("#nUF1842Error").hide();
-    $("#nUF1843Error").hide();
-    $("#nUF1844Error").hide();
-    $("#nUF1845Error").hide();
-    $("#nUF1846Error").hide();
+    $.ajax({
+        url:url+"/alumno", success: function (data) {
+            for (var i = 0; i<data.length; i++) {
+                var alumnos = data;
+                alumno = data[i];
+                insertarAlumnoTabla(alumno)
+            }
+        }
+    });
 
-   function cargarAlumnos(){
-
-    var totalAlumnos=0;
-       for(var i=0;i<dnies.length;i++){
-           var dni=dnies[i];
-           var nombre = nombres[dni];
-           var apellido=apellidos[dni];
-
-           var total_notas=nUF1841[dni]+nUF1842[dni]+nUF1843[dni]+nUF1844[dni]+nUF1845[dni]+nUF1846[dni];
-           var media_nota=total_notas/6;
-           var listado_alumnos="<tr><td><input type='checkbox' value='"+dni+"'/></td><td>"+nombre+"</td><td>"+apellido+"</td>";
-           listado_alumnos+="<td>"+nUF1841[dni]+"</td><td>"+nUF1842[dni]+"</td><td>"+nUF1843[dni]+"</td>";
-           listado_alumnos+="<td>"+nUF1844[dni]+"</td><td>"+nUF1845[dni]+"</td><td>"+nUF1846[dni]+"</td> ";
-           listado_alumnos+="<td>"+media_nota+"</td>";
-           listado_alumnos+="<td><button>Editar</button></td>";
-           listado_alumnos+="</tr>";
-
-           $("#listado_alumnos tbody").append(listado_alumnos);
-           totalAlumnos++;
-       }
-
-
+    function insertarAlumnoTabla(alumno) {
+        var html = "<tr><td><input type='checkbox' value='"+alumno.id+"'/></td><td>" + alumno.nombre + "</td>";
+        html+="<td>" + alumno.apellidos + "</td>";
+        html+="<td>" + alumno.notas.UF1841 + "</td>";
+        html+="<td>" + alumno.notas.UF1842 + "</td>";
+        html+="<td>" + alumno.notas.UF1843 + "</td>";
+        html+="<td>" + alumno.notas.UF1844 + "</td>";
+        html+="<td>" + alumno.notas.UF1845 + "</td>";
+        html+="<td>" + alumno.notas.UF1846 + "</td>";
+        html+="<td><button class='btn btn-success' data-toggle='modal' data-id='"+alumno.id+"' data-target='#myModal'>Editar</button></td>";
+        html+="</tr>";
+        $("#listado_alumnos tbody").append(html);
     }
-    function mostrarNALumnos() {
-        $("#totalAlumnos").text("Alumnos totales"+dnies.length);
-    }
+
+
     $("#listado_alumnos thead input").click(function (e) {
         // $("#listado-alumnos tbody input[type='checkbox']").checked(true);
         //attr vs (prop e is) ---> tiempo de carga
@@ -72,42 +41,23 @@ jQuery( document ).ready(function( $ ) {
             $("#listado_alumnos tbody input").prop("checked", false);
         }
     });
-    function recogerParametros() {
-        var fdni=$("#dni").val();
-        nombres[fdni]=$("#nombre").val();
-        apellidos[fdni]=$("#apellidos").val();
-        nUF1841[fdni]=$("#nUF1841").val();
-        nUF1842[fdni]=$("#nUF1842").val();
-        nUF1843[fdni]=$("#nUF1843").val();
-        nUF1844[fdni]=$("#nUF1844").val();
-        nUF1845[fdni]=$("#nUF1845").val();
-        nUF1846[fdni]=$("#nUF1846").val();
-        const REGEXDNI='/^[0-9]{8}[A-Z]$/i';
-        var dni = new RegExp( '/^[0-9]{8}[A-Z]$/i');
-        if (!fdni.match(dni)){
-            $("#dniError").show();
-        }
-        if(nombres[fdni].length<5 || nombres[fdni].length>20){
-            $("#nombreError").show();
-        }
-
-        dnies.push(fdni);
 
 
-
-
-
-    }
     function crearArrays() {
 
     }
-    $("#borrado").on("click",function (){
+
+    $("#borrado").on("click", function () {
         //0 recoger el parametro
         // 1 borrado de vista
 
-        var codigo=$("#listado_alumnos tbody input:checked").each(function(e){
+        var codigo = $("#listado_alumnos tbody input:checked").each(function (e) {
+            $.ajax({
+                url:url+"/alumno/"+$(this).val(), type:"DELETE",success: function (data) {
 
-            borradoBBDD($(this).val())
+                }
+            });
+
         });
         borradoVista();
         // borrado de la BBDD
@@ -115,31 +65,66 @@ jQuery( document ).ready(function( $ ) {
 
         mostrarNALumnos();
     });
-    $("#guardar").on("click",function (){
+    $("#listado_alumnos tbody ").on("click","button", function () {
 
-        recogerParametros();
-        crearArrays();
+        
+
+
+            $.ajax({
+                url:url+"/alumno/"+$(this).attr("data-id"), type:"get",success: function (data) {
+                    var datos = {id: '', nombre: '', dni: '', apellidos: '', notas: {}};
+
+                     datos=data;
+                    $("#nombre").val(datos.nombre);
+                    $("#apellidos").val(datos.apellidos);
+                    $("#dni").val(datos.dni);
+                    $("#nUF1841").val(datos.notas.UF1841);
+                    $("#nUF1842").val(datos.notas.UF1842);
+                    $("#nUF1843").val(datos.notas.UF1843);
+                    $("#nUF1844").val(datos.notas.UF1844);
+                    $("#nUF1845").val(datos.notas.UF1845);
+                    $("#nUF1846").val(datos.notas.UF1846);
+                }
+
+
+        });
+        borradoVista();
+        // borrado de la BBDD
+    });
+
+    $("#guardar").on("click", function () {
+alert("guardar");
+        datos=recogerParametros();
+        $.ajax({
+            url: url + "/alumno", type: "post",data:datos, success: function (data) {
+
+            }
+        });
         cargarAlumnos();
 
     });
     function borradoVista() {
         $("#listado_alumnos tbody tr input:checked").parents("tr").remove();
     }
-    function borrarFormulario(){
-        $("#dni").val("");
-        $("#nombre").val("");
-        $("#apellidos").val("");
-        $("#nUF1841").val("");
-        $("#nUF1842").val("");
-        $("#nUF1843").val("");
-        $("#nUF1844").val("");
-        $("#nUF1845").val("");
-        $("#nUF1846").val("");
-    }
-    cargarAlumnos();
-    mostrarNALumnos();
-    });
+    function recogerParametros(){
+        var alumno={};
+        var nombre=$("#nombre").val();
+        var apellidos=$("#apellidos").val();
+        var dni=$("#dni").val();
 
+
+        var notas = {
+            'UF1841': $("#nUF1841").val(),
+            'UF1842': $("#nUF1842").val(),
+            'UF1843': $("#nUF1843").val(),
+            'UF1844': $("#nUF1844").val(),
+            'UF1845': $("#nUF1845").val(),
+            'UF1846': $("#nUF1846").val()
+        };
+       var datos = {nombre: nombre, apellidos: apellidos, dni: dni, notas: notas};
+        return datos;
+    }
+});
 
 function letraDNI(dni)
 {
